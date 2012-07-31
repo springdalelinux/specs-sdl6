@@ -4,7 +4,7 @@ Name:           buildsys-build-%{repo}
 %define altname buildsys-build-rpmfusion
 Epoch:          1
 Version:        6.3
-Release:        1
+Release:        2
 Summary:        Tools and files used by the %{repo} buildsys 
 
 Group:          Development/Tools

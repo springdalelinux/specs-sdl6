@@ -1,20 +1,20 @@
-%global svn r10737
+%global svn r12617
 
 %global emacs_sitelisp  %{_datadir}/emacs/site-lisp/
 %global xemacs_sitelisp %{_datadir}/xemacs/site-packages/lisp/
 
-%global INFO_FILES BeginningMacaulay2 Benchmark BGG BoijSoederberg Browse Bruns ChainComplexExtras Classic ConvexInterface ConwayPolynomials Depth Dmodules EdgeIdeals Elimination FirstPackage FourierMotzkin FourTiTwo GenericInitialIdeal gfanInterface HyperplaneArrangements IntegralClosure InvolutiveBases LexIdeals LLLBases LocalRings Macaulay2Doc MapleInterface Markov NoetherNormalization Normaliz NumericalAlgebraicGeometry OpenMath PackageTemplate Parsing PieriMaps Points Polyhedra Polymake Posets PrimaryDecomposition RationalPoints ReesAlgebra Regularity Schubert2 SchurFunctors SchurRings SCSP SimpleDoc SimplicialComplexes SRdeformations StatePolytope Style SymmetricPolynomials TangentCone Text XML
+%global INFO_FILES BeginningMacaulay2 Benchmark BGG BoijSoederberg Browse Bruns ChainComplexExtras Classic ConvexInterface ConwayPolynomials Depth Dmodules EdgeIdeals Elimination FirstPackage FourierMotzkin FourTiTwo GenericInitialIdeal gfanInterface HyperplaneArrangements IntegralClosure InvolutiveBases LexIdeals LLLBases LocalRings Macaulay2Doc MapleInterface Markov NoetherNormalization Normaliz NumericalAlgebraicGeometry OpenMath PackageTemplate Parsing PieriMaps Points Polyhedra Polymake Posets PrimaryDecomposition RationalPoints ReesAlgebra Regularity Schubert2 SchurFunctors SchurRings SimpleDoc SimplicialComplexes SRdeformations StatePolytope Style SymmetricPolynomials TangentCone Text XML
  
 Summary: System for algebraic geometry and commutative algebra
 Name:    Macaulay2
-Version: 1.3.1
-Release: 5%{?dist}
+Version: 1.4
+Release: 2%{?dist}
 
 License: GPLv2
 Group:   Applications/Engineering
 URL:     http://www.math.uiuc.edu/Macaulay2/
 # the SVN revision is being used as a unique ID
-Source0: http://www.math.uiuc.edu/Macaulay2/Downloads/SourceCode/Macaulay2-%{version}-%{svn}.bz2
+Source0: http://www.math.uiuc.edu/Macaulay2/Downloads/SourceCode/Macaulay2-%{version}-%{svn}-src.tar.bz2
 #Source0: Macaulay2-%{version}-%{pre}.tar.bz2
 #Source1: Macaulay2-svn_checkout.sh
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -22,6 +22,38 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source10: Macaulay2.png
 Source11: Macaulay2.desktop
 Source20: etags.sh
+
+# support files
+Source101: 4ti2-1.3.2.tar.gz
+Source102: blas.tgz
+Source103: cdd+-077a.tar.gz
+Source104: cddlib-094f.tar.gz
+Source106: factory-3-1-1.tar.gz
+Source107: frobby_v0.8.2.tar.gz
+Source108: gc-7.2.2010.2.16.tar.gz
+Source109: gc-7.2alpha5-2010-09-03.tar.gz
+Source110: gc-7.2alpha7-2011-07-25.tar.gz
+Source111: gdbm-1.8.3.tar.gz
+Source112: gfan0.4plus.tar.gz
+Source113: glpk-4.44.tar.gz
+Source114: lapack-3.2.2.tgz
+Source115: libfac-3-1-1.tar.gz
+Source116: libtool-2.2.6a.tar.gz
+Source117: lrslib-042c.tar.gz
+Source127: mpfr-3.0.0.tar.gz
+Source128: mpir-2.1.1.tar.gz
+Source129: mpir-2.1.2.tar.gz
+Source130: nauty24r2.tar.gz
+Source131: normaliz2.5Source.zip
+Source132: Normaliz2.5.zip
+Source133: ntl-5.5.2.tar.gz
+Source134: pari-2.3.5.tar.gz
+Source135: polymake-2.9.8.tar.bz2
+Source136: readline61-001
+Source137: readline61-002
+Source138: readline-6.1.tar.gz
+Source139: scscp-0.6.1.tar.gz
+
 
 Patch0: Macaulay2-1.1-optflags.patch
 Patch1: Macaulay2-1.2-xdg_open.patch
@@ -90,15 +122,48 @@ and Michael E. Stillman
 
 install -p -m755 %{SOURCE20} ./etags
 
-%patch0 -p1 -b .optflags
-%patch1 -p1 -b .xdg_open
-%patch201739 -p1 -b .bz201739
-%patch8 -p1 -b .fedora
+#%patch0 -p1 -b .optflags
+#%patch1 -p1 -b .xdg_open
+#%patch201739 -p1 -b .bz201739
+#%patch8 -p1 -b .fedora
 # SVN revision 10971
-%patch9 -p1 -b .dso
+#%patch9 -p1 -b .dso
 # 4ti2 binaries are tucked away in %{_libdir}/4ti2/bin/
 # and are thus arch dependant
 sed -i "s|@@LIBDIR@@|%{_libdir}|g" Macaulay2/packages/FourTiTwo.m2 
+
+# make a build directory and copy the tarfiles into there
+mkdir -p BUILD/normal || echo
+mkdir -p BUILD/tarfiles || echo
+cp %SOURCE101 BUILD/tarfiles
+cp %SOURCE102 BUILD/tarfiles
+cp %SOURCE103 BUILD/tarfiles
+cp %SOURCE104 BUILD/tarfiles
+cp %SOURCE106 BUILD/tarfiles
+cp %SOURCE107 BUILD/tarfiles
+cp %SOURCE108 BUILD/tarfiles
+cp %SOURCE109 BUILD/tarfiles
+cp %SOURCE110 BUILD/tarfiles
+cp %SOURCE111 BUILD/tarfiles
+cp %SOURCE112 BUILD/tarfiles
+cp %SOURCE113 BUILD/tarfiles
+cp %SOURCE114 BUILD/tarfiles
+cp %SOURCE115 BUILD/tarfiles
+cp %SOURCE116 BUILD/tarfiles
+cp %SOURCE117 BUILD/tarfiles
+cp %SOURCE127 BUILD/tarfiles
+cp %SOURCE128 BUILD/tarfiles
+cp %SOURCE129 BUILD/tarfiles
+cp %SOURCE130 BUILD/tarfiles
+cp %SOURCE131 BUILD/tarfiles
+cp %SOURCE132 BUILD/tarfiles
+cp %SOURCE133 BUILD/tarfiles
+cp %SOURCE134 BUILD/tarfiles
+cp %SOURCE135 BUILD/tarfiles
+cp %SOURCE136 BUILD/tarfiles
+cp %SOURCE137 BUILD/tarfiles
+cp %SOURCE138 BUILD/tarfiles
+cp %SOURCE139 BUILD/tarfiles
 
 [ -f configure -a -f include/config.h ] || make 
 
@@ -108,26 +173,29 @@ sed -i "s|@@LIBDIR@@|%{_libdir}|g" Macaulay2/packages/FourTiTwo.m2
 PATH=/sbin:$(pwd):$PATH; export PATH
 
 ## configure macro currently broken, probably fixable -- Rex
+cd BUILD/normal
 CFLAGS="%{optflags}" \
 CXXFLAGS="%{optflags}" \
 CPPFLAGS="-I%{_includedir}/readline5" \
 LDFLAGS="-L%{_libdir}/readline5" \
-./configure \
+../../configure \
   --prefix=%{_prefix} \
-  --libdir="\${prefix}/%{_lib}" \
-  --disable-dumpdata \
-  --enable-shared \
-  --disable-fc-lib-ldflags \
-  --disable-strip \
-  --disable-building \
-  --with-unbuilt-programs="gfan 4ti2 normaliz" \
-  --disable-frobby
+  --libdir="\${prefix}/%{_lib}"
+#  --enable-shared
+
+#  --disable-dumpdata \
+#  --disable-building \
+#  --disable-fc-lib-ldflags \
+#  --disable-strip \
+#  --with-unbuilt-programs="gfan 4ti2 normaliz" \
+#  --disable-frobby
 
 # Not smp-safe
 make -j 1
 
 
 %check 
+cd BUILD/normal
 make -k check ||:
 
 
@@ -135,6 +203,7 @@ make -k check ||:
 rm -rf %{buildroot}
 
 # FIXME/TODO: a few examples fail on 64bit/mock, mostly harmless, but still...
+cd BUILD/normal
 make install DESTDIR=%{buildroot} \
   IgnoreExampleErrors=true
 
@@ -218,8 +287,10 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%doc Macaulay2/COPYING Macaulay2/README
+%doc Macaulay2/COPYING-GPL-2 Macaulay2/COPYING-GPL-3 Macaulay2/README.in Macaulay2/LAYOUT
 %{_bindir}/M2
+%{_libexecdir}/%{name}/program-licenses
+%{_libexecdir}/%{name}/%{_target_cpu}-Linux-*
 %{_datadir}/applications/*Macaulay2.desktop
 %{_datadir}/icons/hicolor/*/*/*
 %{_datadir}/Macaulay2/
@@ -232,6 +303,9 @@ fi
 
 
 %changelog
+* Tue Oct 02 2012 Thomas Uphill <uphill@ias.edu> - 1.4-5
+- initial build on 1.4
+
 * Tue Mar 16 2010 Mark Chappell <tremble@fedoraproject.org> - 1.3.1-5
 - Run install-info on all of the .info files we installed
 - Re-enable the now functional ppc64 build
